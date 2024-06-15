@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useContext } from "react";
 import { ConfigProvider, theme } from "antd";
 import {
   FC,
@@ -11,18 +11,12 @@ import {
   SetStateAction,
   useLayoutEffect,
 } from "react";
-
-interface ThemeContext {
-  isDarkMode: boolean;
-  toggleDarkMode: () => void;
-}
-
-export const ThemeContext = createContext<ThemeContext>({} as ThemeContext);
+import { useThemeStore } from "@/stores/theme";
 
 const ThemeProvider: FC<{
   children: ReactNode;
 }> = ({ children }) => {
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
+  const isDarkMode = useThemeStore((state) => state.isDarkMode);
 
   const alg = isDarkMode ? theme.darkAlgorithm : theme.defaultAlgorithm;
 

@@ -1,5 +1,6 @@
 "use client";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { AntdRegistry } from "@ant-design/nextjs-registry";
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -8,15 +9,21 @@ import {
   VideoCameraOutlined,
 } from "@ant-design/icons";
 import { Button, Layout, Menu, theme } from "antd";
-import ThemeProvider from "@/components/provider/ThemeProvider";
+import ThemeProvider, {
+  ThemeContext,
+} from "@/components/provider/ThemeProvider";
+import { useThemeStore } from "@/stores/theme";
 
 const { Header, Sider, Content } = Layout;
 
-export default function DashboardLayout({
+export default function WorkspaceLayout({
   children, // will be a page or nested layout
 }: {
   children: React.ReactNode;
 }) {
+  const isDarkMode = useThemeStore((state) => state.isDarkMode);
+  const toggleDarkMode = useThemeStore((state) => state.toggleDarkMode);
+
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -24,7 +31,7 @@ export default function DashboardLayout({
 
   return (
     <>
-      <ThemeProvider>
+      <div>
         <Layout style={{ minHeight: "100vh", minWidth: "100vh" }}>
           <Sider trigger={null} collapsible collapsed={collapsed}>
             <div className="demo-logo-vertical" />
@@ -73,10 +80,11 @@ export default function DashboardLayout({
               }}
             >
               {children}
+              <div onClick={toggleDarkMode}>xxx</div>
             </Content>
           </Layout>
         </Layout>
-      </ThemeProvider>
+      </div>
     </>
   );
 }
